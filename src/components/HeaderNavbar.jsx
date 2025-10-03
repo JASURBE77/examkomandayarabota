@@ -3,6 +3,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoSearch } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { FaRegUser } from "react-icons/fa6";
+import { LuShoppingCart } from "react-icons/lu";
 const HeaderNavbar = () => {
   return (
     <div className='max-w-[100%] w-[95%] mx-auto' >
@@ -23,12 +25,12 @@ const HeaderNavbar = () => {
                     Избранные
                 </div>
                  <div className='flex flex-col text-[18px] items-center'>
-                    <FaRegHeart />
-                    Избранные
+                    <LuShoppingCart />
+                    Корзина
                 </div>
                  <div className='flex flex-col text-[18px] items-center'>
-                    <FaRegHeart />
-                    Избранные
+                    <FaRegUser />
+                    Войти
                 </div>
             </div>
         </div>
