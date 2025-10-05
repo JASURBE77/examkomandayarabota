@@ -7,6 +7,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './pages/Home.jsx';
+import CategoryPage from './pages/CategoryPage.jsx';
+import Basket from './pages/Basket.jsx';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />
+      },
+      {
+        path: "/category/:slug",
+        element: <CategoryPage />
+      },
+      {
+        path: "/basket",
+        element: <Basket />
       }
     ]
   },

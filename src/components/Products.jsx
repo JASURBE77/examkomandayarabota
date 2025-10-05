@@ -339,7 +339,10 @@ const Products = () => {
                         </button>
                       </div>
                     </div>
+                    
+                    
                   ) : (
+                    
                     // вертикальные карточки
                     <div className="flex flex-col h-full p-4">
                       <div className="flex justify-center items-center mt-3 mb-3">
@@ -369,6 +372,7 @@ const Products = () => {
                         Корзина
                       </button>
                     </div>
+                    
                   )}
                 </div>
               )
@@ -376,6 +380,7 @@ const Products = () => {
           </div>
         </div>
       </div>
+      
     </div>
   )
 }
