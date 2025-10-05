@@ -213,174 +213,127 @@
 // }
 
 import React, { useEffect, useState } from 'react'
+import { FaRegHeart, FaShoppingCart } from "react-icons/fa";
+import { BiBarChart } from "react-icons/bi";
 
 const Products = () => {
-  const [products, setProducts] = useState([])
+  const [swiperdata , setswiperdata] = useState([])
+  const [basket , setbasket] = useState([])
 
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch('https://dummyjson.com/products?limit=6')
-      const data = await res.json()
-      setProducts(data.products)
-    } catch (err) {
-      console.error("API xatolik:", err)
-    }
-  }
 
-  useEffect(() => {
-    fetchProducts()
-  }, [])
+  const handledata = async () => {
 
+    const getdata = await fetch('https://dummyjson.com/products')
+  const datajson = await getdata.json()
+  setswiperdata(datajson.products)
+
+}
+useEffect(() => {
+  handledata()
+},[])
+const heartbasket = (e) => {
+let update;
+if(basket.some(item => item.id === e.id)) {
+  update = basket.filter(item => item.id !== e.id);
+} else {
+  update = [...basket , e]
+}
+setbasket(update)
+    localStorage.setItem("products", JSON.stringify(update));
+}
   return (
-    <div className="min-h-screen bg-white flex justify-center py-10 px-4 font-[Arial,sans-serif]">
-      <div className="relative max-w-[100%] w-[95%] mx-auto">
-        <div
-          style={{
-            border: "8px solid #F11D3A",
-            borderRadius: "16px",
-            overflow: "hidden",
-          }}
-        >
-          <style>{`
-            .products-grid {
-              display: grid;
-              grid-template-columns: 1fr;
-            }
-            @media (min-width:1024px){
-              .products-grid {
-                grid-template-columns: 480px repeat(4,1fr);
-                grid-template-rows: 260px 260px;
-              }
-            }
-            .product-cell {
-              box-sizing:border-box;
-              position:relative;
-              background:white;
-              border-bottom:8px solid #F11D3A;
-              transition:all .3s ease;
-            }
-            .product-cell:hover{
-              box-shadow:0 6px 12px rgba(0,0,0,0.15);
-              transform:translateY(-2px);
-            }
-            .products-grid> .product-cell:nth-last-child(-n+5){
-              border-bottom:none;
-            }
-            .product-cell.top-left{
-              border-bottom:none;
-            }
-            .product-cell.bottom-left{
-              border-top:8px solid #F11D3A;
-            }
-          `}</style>
-
-          <div className="products-grid">
-            {products.map((p, i) => {
-              const gridStyle = {}
-              if (i === 0) {
-                gridStyle.gridColumn = "1 / 2"
-                gridStyle.gridRow = "1 / 2"
-              } else if (i === 5) {
-                gridStyle.gridColumn = "1 / 2"
-                gridStyle.gridRow = "2 / 3"
-              } else {
-                const col = 2 + (i - 1)
-                gridStyle.gridColumn = `${col} / ${col + 1}`
-                gridStyle.gridRow = "1 / 2"
-              }
-
-              const classes = ["product-cell"]
-              if (i === 0) classes.push("top-left")
-              if (i === 5) classes.push("bottom-left")
-
-              // hisoblashlar
-              const oldPrice = Math.round(p.price / (1 - p.discountPercentage / 100))
-              const installment = `${Math.round(p.price / 12)} сум x 12 мес`
-
-              return (
-                <div
-                  key={p.id}
-                  className={`${classes.join(" ")} relative`}
-                  style={gridStyle}
-                >
-                  {/* скидка badge */}
-                  <div className="absolute top-3 left-3 bg-[#F11D3A] text-white text-sm font-semibold rounded px-3 py-1">
-                    -{Math.round(p.discountPercentage)}%
-                  </div>
-
-                  {/* горизонтальные карточки */}
-                  {(i === 0 || i === 5) ? (
-                    <div className="flex items-center h-full p-5">
-                      <div className="w-[48%] flex justify-center">
-                        <img
-                          src={p.thumbnail}
-                          alt={p.title}
-                          className="h-[190px] object-contain select-none"
-                        />
-                      </div>
-                      <div className="w-[52%] pl-6 flex flex-col justify-center">
-                        <h3 className="text-[18px] font-normal text-gray-800 leading-snug">
-                          {p.title}
-                        </h3>
-                        <p className="text-[15px] text-gray-400 line-through mt-1">
-                          {oldPrice.toLocaleString()} сум
-                        </p>
-                        <p className="text-[26px] font-bold text-[#F11D3A] mt-1">
-                          {p.price.toLocaleString()} сум
-                        </p>
-                        <div className="bg-[#FFD600] text-gray-900 text-[15px] font-medium rounded px-3 py-1 mt-2 inline-block">
-                          {installment}
-                        </div>
-                        <button className="mt-4 self-start border-2 border-[#F11D3A] text-[#F11D3A] rounded-md text-[15px] font-medium px-4 py-2 hover:bg-[#F11D3A] hover:text-white transition-colors">
-                          В рассрочку
-                        </button>
-                        <button className="mt-2 self-start border-2 border-[#F11D3A] text-[#F11D3A] rounded-md text-[15px] font-medium px-4 py-2 hover:bg-[#F11D3A] hover:text-white transition-colors">
-                          Корзина
-                        </button>
-                      </div>
-                    </div>
-                    
-                    
-                  ) : (
-                    
-                    // вертикальные карточки
-                    <div className="flex flex-col h-full p-4">
-                      <div className="flex justify-center items-center mt-3 mb-3">
-                        <img
-                          src={p.thumbnail}
-                          alt={p.title}
-                          className="h-[210px] object-contain select-none"
-                        />
-                      </div>
-                      <h3 className="text-[16px] font-normal text-gray-800 leading-snug h-[46px]">
-                        {p.title}
-                      </h3>
-                      <p className="text-[14px] text-gray-400 line-through mt-1">
-                        {oldPrice.toLocaleString()} сум
-                      </p>
-                      <p className="text-[22px] font-bold text-[#F11D3A] mt-1">
-                        {p.price.toLocaleString()} сум
-                      </p>
-                      <div className="bg-[#FFD600] text-gray-900 text-[14px] font-medium rounded px-3 py-1 mt-2 inline-block">
-                        {installment}
-                      </div>
-                      <br />
-                      <button className="mt-auto border-2 border-[#F11D3A] text-[#F11D3A] rounded-md text-[14px] font-medium px-4 py-2 hover:bg-[#F11D3A] hover:text-white transition-colors">
-                        В рассрочку
-                      </button>
-                      <button className="mt-2 border-2 border-[#F11D3A] text-[#F11D3A] rounded-md text-[14px] font-medium px-4 py-2 hover:bg-[#F11D3A] hover:text-white transition-colors">
-                        Корзина
-                      </button>
-                    </div>
-                    
-                  )}
-                </div>
-              )
-            })}
-          </div>
+    <div className='max-w-[100%] w-[95%] mx-auto'>
+      <div className='bg-red-500 rounded-2xl flex justify-between p-5'>
+        <div className='flex flex-col gap-5'>
+             {swiperdata.slice(0, 2).map((e) => (
+                      <div key={e.id} className="w-[470px] bg-white rounded-2xl p-3 relative flex justify-evenly ">
+                  
+                            <button 
+                              onClick={() => heartbasket(e)} 
+                              className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
+                            >
+                              <FaRegHeart 
+                                className={`w-5 h-5 ${basket.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} 
+                              />
+                            </button>
+                  
+                            <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
+                              <BiBarChart className="w-5 h-5 text-gray-500" />
+                            </button>
+                      
+                            <img
+                              src={e.thumbnail}
+                              alt={e.title}
+                              className="w-[150px] rounded-xl object-contain mb-3 bg-base-200 h-40"
+                            />
+                      
+                          <div>
+                              <h2 className="text-sm font-medium mb-2">{e.title}</h2>
+                      
+                            <p className="text-xl font-bold">
+                              {e.price}<span className="text-sm"> сум</span>
+                            </p>
+                            <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
+                              1 629 000 сум x 12 мес
+                            </p>
+                      
+                            <div className="flex justify-between items-center gap-2 mt-3">
+                              <button className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
+                                <FaShoppingCart className="w-4 h-4" />
+                              </button>
+                              <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
+                                В рассрочку
+                              </button>
+                            </div>
+                          </div>
+                          </div>
+                  ))}
+        </div>
+        <div className='flex items-center gap-2'>
+            {swiperdata.slice(2, 6).map((e) => (
+                      <div key={e.id} className="w-56 bg-white h-full rounded-2xl p-3 relative flex flex-col  gap-3">
+                  
+                            <button 
+                              onClick={() => heartbasket(e)} 
+                              className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
+                            >
+                              <FaRegHeart 
+                                className={`w-5 h-5 ${basket.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} 
+                              />
+                            </button>
+                  
+                            <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
+                              <BiBarChart className="w-5 h-5 text-gray-500" />
+                            </button>
+                      
+                            <img
+                              src={e.thumbnail}
+                              alt={e.title}
+                              className="w-full rounded-xl object-contain mb-3 bg-base-200 h-40"
+                            />
+                      
+                              <h2 className="text-sm font-medium mb-2">{e.title}</h2>
+                      
+                            <p className="text-xl font-bold">
+                              {e.price}<span className="text-sm"> сум</span>
+                            </p>
+                            <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
+                              1 629 000 сум x 12 мес
+                            </p>
+                      
+                            <div className="flex justify-between items-center gap-2 mt-3">
+                              <button className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
+                                <FaShoppingCart className="w-4 h-4" />
+                              </button>
+                              <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
+                                В рассрочку
+                              </button>
+                            </div>
+                          
+                          </div>
+                  ))}
         </div>
       </div>
-      
     </div>
   )
 }
