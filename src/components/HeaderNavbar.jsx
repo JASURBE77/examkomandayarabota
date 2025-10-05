@@ -14,10 +14,11 @@ const HeaderNavbar = () => {
   const [navbarQuery, setNavbarQuery] = useState('');
   const [stateBasket , setStateBasket] = useState(0)
 
-  useEffect(() => {
-    const productbasket = JSON.parse(localStorage.getItem("products")) || [];
-setStateBasket(productbasket.length);
-  },[])
+useEffect(() => {
+  const productbasket = JSON.parse(localStorage.getItem("products")) || [];
+  setStateBasket(productbasket.length);
+}, []);
+
 
   useEffect(() => {
     fetch('https://dummyjson.com/products/categories')
