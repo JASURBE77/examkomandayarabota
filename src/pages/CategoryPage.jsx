@@ -58,34 +58,75 @@
 // export default CategoryPage;
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import { FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { BiBarChart } from "react-icons/bi";
+
 const CategoryPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // 🔴 Yangi state'lar
+  const [savedProducts, setSavedProducts] = useState([]);
+  const [savedShop, setSavedShop] = useState([]);
+
+  // API dan ma'lumot olish
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
 
     fetch(`https://dummyjson.com/products/category/${slug}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (isMounted) {
           setProducts(data.products || []);
           setLoading(false);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error loading products:", err);
         setLoading(false);
       });
 
-    return () => { isMounted = false };
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
+
+  // LocalStorage dan saved'larni olish
+  useEffect(() => {
+    const favs = JSON.parse(localStorage.getItem("products")) || [];
+    const shop = JSON.parse(localStorage.getItem("shop")) || [];
+    setSavedProducts(favs);
+    setSavedShop(shop);
+  }, []);
+
+  // ❤️ Basket toggle
+  const handleBasket = (product) => {
+    let updated;
+    const exists = savedProducts.find((p) => p.id === product.id);
+    if (exists) {
+      updated = savedProducts.filter((p) => p.id !== product.id);
+    } else {
+      updated = [...savedProducts, product];
+    }
+    setSavedProducts(updated);
+    localStorage.setItem("products", JSON.stringify(updated));
+  };
+
+  // 🛒 Shop toggle
+  const handleShop = (product) => {
+    let updated;
+    const exists = savedShop.find((p) => p.id === product.id);
+    if (exists) {
+      updated = savedShop.filter((p) => p.id !== product.id);
+    } else {
+      updated = [...savedShop, product];
+    }
+    setSavedShop(updated);
+    localStorage.setItem("shop", JSON.stringify(updated));
+  };
 
   return (
     <div className="max-w-[1200px] mx-auto p-10">
@@ -105,42 +146,67 @@ const CategoryPage = () => {
       ) : (
         <div className="flex flex-wrap gap-6">
           {products.map((item) => (
-              <div className="w-64 bg-white  rounded-2xl  p-3 relative flex flex-col">
-                                  {/* Yurak va statistika ikonkalar */}
-                                  <button className="absolute top-3 right-3 bg-white rounded-full p-2 shadow">
-                                    
-                                    <FaRegHeart className="w-5 h-5 text-gray-500" />
-                                  </button>
-                                  <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
-                                    <BiBarChart className="w-5 h-5 text-gray-500" />
-                                  </button>
-                            
-                                  {/* Rasm */}
-                                  <img
-                                    src={item.thumbnail}
-                                    alt="Samsung Galaxy S25 Ultra"
-                                    className="w-full rounded-xl object-contain mb-3 bg-base-200 h-full"
-                                  />
-                            
-                                  {/* Title */}
-                                  <h2 className="text-sm font-medium mb-2">{item.title}</h2>
-                            
-                                  {/* Narx */}
-                                  <p className="text-xl font-bold">{item.price}<span className="text-sm">сум</span></p>
-                                  <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
-                                    1 629 000 сум x 12 мес
-                                  </p>
-                            
-                                  {/* Pastki tugmalar */}
-                                  <div className="flex justify-between items-center gap-2 mt-3">
-                                    <button className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
-                                      <FaShoppingCart className="w-4 h-4" />
-                                    </button>
-                                    <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
-                                      В рассрочку
-                                    </button>
-                                  </div>
-                                </div>
+            <div
+              key={item.id}
+              className="w-64 bg-white rounded-2xl p-3 relative flex flex-col"
+            >
+              {/* ❤️ Yurak */}
+              <button
+                onClick={() => handleBasket(item)}
+                className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
+              >
+                <FaRegHeart
+                  className={`w-5 h-5 ${
+                    savedProducts.some((p) => p.id === item.id)
+                      ? "text-red-500"
+                      : "text-gray-500"
+                  }`}
+                />
+              </button>
+
+              {/* 📊 Statistika */}
+              <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
+                <BiBarChart className="w-5 h-5 text-gray-500" />
+              </button>
+
+              {/* Rasm */}
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="w-full rounded-xl object-contain mb-3 bg-base-200 h-full"
+              />
+
+              {/* Title */}
+              <h2 className="text-sm font-medium mb-2">{item.title}</h2>
+
+              {/* Narx */}
+              <p className="text-xl font-bold">
+                {item.price}
+                <span className="text-sm"> сум</span>
+              </p>
+              <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
+                1 629 000 сум x 12 мес
+              </p>
+
+              {/* Pastki tugmalar */}
+              <div className="flex justify-between items-center gap-2 mt-3">
+                <button
+                  onClick={() => handleShop(item)}
+                  className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  <FaShoppingCart
+                    className={`w-5 h-5 ${
+                      savedShop.some((p) => p.id === item.id)
+                        ? "text-red-500"
+                        : "text-gray-500"
+                    }`}
+                  />
+                </button>
+                <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
+                  В рассрочку
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       )}

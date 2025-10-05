@@ -219,119 +219,146 @@ import { BiBarChart } from "react-icons/bi";
 const Products = () => {
   const [swiperdata , setswiperdata] = useState([])
   const [basket , setbasket] = useState([])
-
+  const [shop , setshop] = useState([])   // ✅ shop uchun state
 
   const handledata = async () => {
-
     const getdata = await fetch('https://dummyjson.com/products')
-  const datajson = await getdata.json()
-  setswiperdata(datajson.products)
+    const datajson = await getdata.json()
+    setswiperdata(datajson.products)
+  }
 
-}
-useEffect(() => {
-  handledata()
-},[])
-const heartbasket = (e) => {
-let update;
-if(basket.some(item => item.id === e.id)) {
-  update = basket.filter(item => item.id !== e.id);
-} else {
-  update = [...basket , e]
-}
-setbasket(update)
+  useEffect(() => {
+    handledata()
+    // localStorage dan boshlab olish
+    const savedProducts = JSON.parse(localStorage.getItem("products")) || []
+    setbasket(savedProducts)
+
+    const savedShop = JSON.parse(localStorage.getItem("shop")) || []
+    setshop(savedShop)
+  },[])
+
+  // Heart bosilganda
+  const heartbasket = (e) => {
+    let update;
+    if(basket.some(item => item.id === e.id)) {
+      update = basket.filter(item => item.id !== e.id);
+    } else {
+      update = [...basket , e]
+    }
+    setbasket(update)
     localStorage.setItem("products", JSON.stringify(update));
-}
+  }
+
+  // Shop bosilganda
+  const handleshop = (e) => {
+    let newupdate;
+    if(shop.some(p => p.id === e.id)) {
+      newupdate = shop.filter(p => p.id !== e.id)
+    } else {
+      newupdate = [...shop , e]
+    }
+    setshop(newupdate)
+    localStorage.setItem("shop", JSON.stringify(newupdate))
+  }
+
   return (
     <div className='max-w-[100%] w-[95%] mx-auto'>
-      <div className='bg-red-500 rounded-2xl flex justify-between p-5'>
+      <div className='bg-red-500 rounded-2xl flex justify-evenly p-5'>
+        {/* Chapdagi 2 ta katta card */}
         <div className='flex flex-col gap-5'>
-             {swiperdata.slice(0, 2).map((e) => (
-                      <div key={e.id} className="w-[470px] bg-white rounded-2xl p-3 relative flex justify-evenly ">
-                  
-                            <button 
-                              onClick={() => heartbasket(e)} 
-                              className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
-                            >
-                              <FaRegHeart 
-                                className={`w-5 h-5 ${basket.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} 
-                              />
-                            </button>
-                  
-                            <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
-                              <BiBarChart className="w-5 h-5 text-gray-500" />
-                            </button>
-                      
-                            <img
-                              src={e.thumbnail}
-                              alt={e.title}
-                              className="w-[150px] rounded-xl object-contain mb-3 bg-base-200 h-40"
-                            />
-                      
-                          <div>
-                              <h2 className="text-sm font-medium mb-2">{e.title}</h2>
-                      
-                            <p className="text-xl font-bold">
-                              {e.price}<span className="text-sm"> сум</span>
-                            </p>
-                            <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
-                              1 629 000 сум x 12 мес
-                            </p>
-                      
-                            <div className="flex justify-between items-center gap-2 mt-3">
-                              <button className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
-                                <FaShoppingCart className="w-4 h-4" />
-                              </button>
-                              <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
-                                В рассрочку
-                              </button>
-                            </div>
-                          </div>
-                          </div>
-                  ))}
+          {swiperdata.slice(0, 2).map((e) => (
+            <div key={e.id} className="w-[470px] bg-white rounded-2xl p-3 relative flex justify-evenly ">
+              {/* Heart */}
+              <button 
+                onClick={() => heartbasket(e)} 
+                className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
+              >
+                <FaRegHeart 
+                  className={`w-5 h-5 ${basket.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} 
+                />
+              </button>
+
+              {/* Chart icon */}
+              <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
+                <BiBarChart className="w-5 h-5 text-gray-500" />
+              </button>
+
+              {/* Rasm */}
+              <img
+                src={e.thumbnail}
+                alt={e.title}
+                className="w-[150px] rounded-xl object-contain mb-3 bg-base-200 h-40"
+              />
+
+              {/* Info */}
+              <div>
+                <h2 className="text-sm font-medium mb-2">{e.title}</h2>
+                <p className="text-xl font-bold">{e.price}<span className="text-sm"> сум</span></p>
+                <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
+                  1 629 000 сум x 12 мес
+                </p>
+                <div className="flex justify-between items-center gap-2 mt-3">
+                  <button 
+                    onClick={() => handleshop(e)}
+                    className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100"
+                  >
+                    <FaShoppingCart className={`w-4 h-4 ${shop.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} />
+                  </button>
+                  <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
+                    В рассрочку
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
+
+        {/* O‘ngdagi 4 ta kichkina card */}
         <div className='flex items-center gap-2'>
-            {swiperdata.slice(2, 6).map((e) => (
-                      <div key={e.id} className="w-56 bg-white h-full rounded-2xl p-3 relative flex flex-col  gap-3">
-                  
-                            <button 
-                              onClick={() => heartbasket(e)} 
-                              className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
-                            >
-                              <FaRegHeart 
-                                className={`w-5 h-5 ${basket.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} 
-                              />
-                            </button>
-                  
-                            <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
-                              <BiBarChart className="w-5 h-5 text-gray-500" />
-                            </button>
-                      
-                            <img
-                              src={e.thumbnail}
-                              alt={e.title}
-                              className="w-full rounded-xl object-contain mb-3 bg-base-200 h-40"
-                            />
-                      
-                              <h2 className="text-sm font-medium mb-2">{e.title}</h2>
-                      
-                            <p className="text-xl font-bold">
-                              {e.price}<span className="text-sm"> сум</span>
-                            </p>
-                            <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
-                              1 629 000 сум x 12 мес
-                            </p>
-                      
-                            <div className="flex justify-between items-center gap-2 mt-3">
-                              <button className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100">
-                                <FaShoppingCart className="w-4 h-4" />
-                              </button>
-                              <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
-                                В рассрочку
-                              </button>
-                            </div>
-                          
-                          </div>
-                  ))}
+          {swiperdata.slice(2, 6).map((e) => (
+            <div key={e.id} className="w-56 bg-white h-full rounded-2xl p-3 relative flex flex-col gap-3">
+              {/* Heart */}
+              <button 
+                onClick={() => heartbasket(e)} 
+                className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
+              >
+                <FaRegHeart 
+                  className={`w-5 h-5 ${basket.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} 
+                />
+              </button>
+
+              {/* Chart icon */}
+              <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
+                <BiBarChart className="w-5 h-5 text-gray-500" />
+              </button>
+
+              {/* Rasm */}
+              <img
+                src={e.thumbnail}
+                alt={e.title}
+                className="w-full rounded-xl object-contain mb-3 bg-base-200 h-40"
+              />
+
+              {/* Info */}
+              <h2 className="text-sm font-medium mb-2">{e.title}</h2>
+              <p className="text-xl font-bold">{e.price}<span className="text-sm"> сум</span></p>
+              <p className="bg-yellow-300 rounded-md text-sm px-2 py-1 w-max mt-1">
+                1 629 000 сум x 12 мес
+              </p>
+
+              <div className="flex justify-between items-center gap-2 mt-3">
+                <button 
+                  onClick={() => handleshop(e)} 
+                  className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  <FaShoppingCart className={`w-4 h-4 ${shop.some(item => item.id === e.id) ? "text-red-500" : "text-gray-500"}`} />
+                </button>
+                <button className="flex-1 bg-red-600 text-white rounded-lg px-3 py-2 text-sm hover:bg-red-700">
+                  В рассрочку
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

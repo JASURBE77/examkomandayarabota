@@ -9,6 +9,7 @@ import {
 import Home from './pages/Home.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
 import Basket from './pages/Basket.jsx';
+import Shopping from './pages/Shopping.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/basket",
         element: <Basket />
+      },
+      {
+        path: "/shopping",
+        element: <Shopping />
       }
     ]
   },

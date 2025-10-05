@@ -87,7 +87,7 @@ setbasket(update)
                   </div>
                 </div>
         ))}
-        <div>
+        <div className='w-full'>
           <img className='w-full hover:object-cover rounded-2xl' src="https://olcha.uz/image/1440x302/homePage/cdn_1/2025-07-16/DvAmWwCXU8V2EDK0d3bFFo7YbIpfPT8euXbpAkSWU6PxaThfpP4GeGHfrLJN.jpg" alt="" />
         </div>
          {database.slice(10, 20).map((e) => (
