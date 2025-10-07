@@ -4,6 +4,8 @@ import Swayper2 from '../components/Swipertwo'
 import Products from '../components/Products'
 import { FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { BiBarChart } from "react-icons/bi";
+import News from '../components/News';
+import Brands from '../components/Brands';
 
 const Home = () => {
   const [database, setDatabase] = useState([])
@@ -234,6 +236,8 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <Brands />
+      <News />
     </div>
   )
 }
