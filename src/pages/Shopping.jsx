@@ -14,37 +14,40 @@ const Shopping = () => {
     setCart(storedCart);
   }, []);
 
-  // Heart toggle
+  // ❤️ Wishlist toggle
   const toggleHeart = (product) => {
-    let updated;
-    if (shop.some(item => item.id === product.id)) {
-      updated = shop.filter(item => item.id !== product.id);
-    } else {
-      updated = [...shop, product];
-    }
-    setShop(updated);
-    localStorage.setItem("shop", JSON.stringify(updated));
+    setShop(prev => {
+      let updated;
+      if (prev.some(item => item.id === product.id)) {
+        updated = prev.filter(item => item.id !== product.id);
+      } else {
+        updated = [...prev, product];
+      }
+      localStorage.setItem("shop", JSON.stringify(updated));
+      return updated;
+    });
   };
 
-  // Cart toggle
+  // 🛒 Savatcha toggle
   const toggleCart = (product) => {
-    let updated;
-    if (cart.some(item => item.id === product.id)) {
-      updated = cart.filter(item => item.id !== product.id);
-    } else {
-      updated = [...cart, product];
-    }
-    setCart(updated);
-    localStorage.setItem("products", JSON.stringify(updated));
+    setCart(prev => {
+      let updated;
+      if (prev.some(item => item.id === product.id)) {
+        updated = prev.filter(item => item.id !== product.id);
+      } else {
+        updated = [...prev, product];
+      }
+      localStorage.setItem("products", JSON.stringify(updated));
+      return updated;
+    });
   };
 
-  // Hamma productlarni cart orqali chiqaramiz
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 p-5">
-      {cart.map(p => (
+      {shop.map(p => (
         <div key={p.id} className="w-64 bg-white rounded-2xl p-3 relative flex flex-col">
 
-          {/* Heart toggle */}
+          {/* ❤️ Heart toggle */}
           <button 
             onClick={() => toggleHeart(p)} 
             className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
@@ -54,12 +57,12 @@ const Shopping = () => {
             />
           </button>
 
-          {/* Bar chart icon */}
+          {/* 📊 Bar chart */}
           <button className="absolute top-14 right-3 bg-white rounded-full p-2 shadow">
             <BiBarChart className="w-5 h-5 text-gray-500" />
           </button>
 
-          {/* Product image */}
+          {/* 🖼️ Product image */}
           <img
             src={p.thumbnail}
             alt={p.title}
@@ -75,15 +78,15 @@ const Shopping = () => {
             1 629 000 сум x 12 мес
           </p>
 
-          {/* Buttons */}
+          {/* Pastki tugmalar */}
           <div className="flex justify-between items-center gap-2 mt-3">
-            {/* Cart toggle */}
+            {/* 🛒 Savatcha toggle */}
             <button 
               onClick={() => toggleCart(p)}     
               className="flex items-center gap-2 border rounded-lg px-3 py-2 text-sm hover:bg-gray-100"
             >
               <FaShoppingCart 
-                className={`w-4 h-4 ${cart.some(item => item.id === p.id) ? "text-red-500" : "text-gray-500"}`} 
+                className={`w-4 h-4 ${cart.some(item => item.id === p.id) ? "text-green-500" : "text-gray-500"}`} 
               />
             </button>
 

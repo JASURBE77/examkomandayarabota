@@ -86,11 +86,13 @@ useEffect(() => {
             <FaRegHeart />
             Избранные
           </div></Link>
-          <div className="flex flex-col text-[18px] items-center">
+          <Link to={'/shopping'}>
+                <div className="flex flex-col text-[18px] items-center">
               <span className="bg-red-500 relative left-5 w-4 flex items-center justify-center text-[12px] text-white h-4 rounded-full p-2">{stateshopping}</span>
             <LuShoppingCart />
             Корзина
           </div>
+          </Link>
           <div className="flex flex-col text-[18px] items-center" onClick={()=>document.getElementById('my_modal_2').showModal()}>
             <FaRegUser />
             Войти

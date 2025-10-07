@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
@@ -31,9 +32,12 @@ export default function Header() {
               0% Рассрочка
             </button>
 
+          <Link to={'/skidka'}>
             <button className="px-4 py-2 rounded-md bg-transparent border border-white text-white text-sm font-semibold transform transition hover:bg-white hover:text-[#d80b2a] hover:scale-105">
               Скидки
             </button>
+          </Link>
+
 
             <button className="px-4 py-2 rounded-md bg-transparent border border-transparent text-white text-sm font-semibold transform transition hover:bg-white hover:text-[#d80b2a] hover:scale-105">
               Розыгрыши

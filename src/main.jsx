@@ -10,6 +10,7 @@ import Home from './pages/Home.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
 import Basket from './pages/Basket.jsx';
 import Shopping from './pages/Shopping.jsx';
+import Skidka from './pages/Skidka.jsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/shopping",
         element: <Shopping />
+      },
+      {
+        path: "/skidka",
+        element: <Skidka />
       }
     ]
   },

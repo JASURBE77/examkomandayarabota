@@ -127,8 +127,8 @@
 //                   className={`${classes.join(" ")} relative`}
 //                   style={gridStyle}
 //                 >
-//                   {/* Вертикальная красная линия */}
-//                   {(i === 0  i === 5  (i % 5 !== 4)) && (
+
+//                   {(i === 0 || i === 5 || (i % 5 !== 4)) && (
 //                     <div className="absolute top-0 bottom-0 right-0 w-[8px] h-150 bg-[#F11D3A]"></div>
 //                   )}
 
@@ -137,7 +137,6 @@
 //                     {p.discount}
 //                   </div>
 
-// Said, [03.10.2025 20:16]
 // {/* горизонтальная карточка */}
 //                   {(i === 0 || i === 5) && (
 //                     <div className="flex items-center h-full p-5">
