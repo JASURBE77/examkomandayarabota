@@ -1,0 +1,14 @@
+[33mf69a2ec[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to f69a2ec
+[33me003a94[m[33m ([m[1;31morigin/sarvar[m[33m)[m HEAD@{1}: reset: moving to e003a94
+[33mecfa63b[m HEAD@{2}: reset: moving to ecfa63b
+[33m87f6a8d[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: commit (merge): Merge remote-tracking branch 'origin/main'
+[33m731d11f[m HEAD@{4}: commit: DW
+[33mb08f0f2[m HEAD@{5}: commit: WDE
+[33m632d1db[m HEAD@{6}: commit: WDE
+[33m704543e[m HEAD@{7}: commit: DWE
+[33m9f50a42[m HEAD@{8}: commit: l
+[33mdbd3c68[m HEAD@{9}: commit: DWE
+[33mecfa63b[m HEAD@{10}: commit: CEF
+[33me003a94[m[33m ([m[1;31morigin/sarvar[m[33m)[m HEAD@{11}: commit: WDEE
+[33mf69a2ec[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{12}: Branch: renamed refs/heads/master to refs/heads/main
+[33mf69a2ec[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{14}: commit (initial): DER
