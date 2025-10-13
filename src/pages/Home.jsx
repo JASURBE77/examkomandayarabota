@@ -6,6 +6,8 @@ import { FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { BiBarChart } from "react-icons/bi";
 import News from '../components/News';
 import Brands from '../components/Brands';
+import Footer from '../components/Footer';
+import LastSection from '../components/LastSection';
 
 const Home = () => {
   const [database, setDatabase] = useState([])
@@ -238,6 +240,8 @@ const Home = () => {
       </div>
       <Brands />
       <News />
+      <LastSection />
+      <Footer />
     </div>
   )
 }

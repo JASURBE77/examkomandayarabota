@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <header className="w-full font-sans select-none">
+    <header className="w-full  font-sans select-none">
       {/* Top banner */}
       <div className="olcha-pattern bg-[#e01236]">
         <div className="max-w-[100%] w-[95%] mx-auto flex items-center justify-between px-6 py-4">
