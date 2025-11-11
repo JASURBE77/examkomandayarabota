@@ -14,6 +14,15 @@ const HeaderNavbar = () => {
   const [navbarQuery, setNavbarQuery] = useState('');
   const [stateBasket , setStateBasket] = useState(0)
   const [stateshopping , setStateshopping] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [userAvatar, setUserAvatar] = useState('');
+
+useEffect(() => {
+  const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const avatar = localStorage.getItem("userAvatar");
+  setIsLoggedIn(loggedIn);
+  if (avatar) setUserAvatar(avatar);
+}, []);
 
 
 useEffect(() => {
@@ -93,29 +102,21 @@ useEffect(() => {
             Корзина
           </div>
           </Link>
-          <div className="flex flex-col text-[18px] items-center" onClick={()=>document.getElementById('my_modal_2').showModal()}>
-            <FaRegUser />
-            Войти
-          </div>
-          <dialog id="my_modal_2" className="modal">
-  <div className="modal-box flex flex-col w-auto justify-evenly">
-       <form method="dialog">
-      {/* if there is a button in form, it will close the modal */}
-      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-    <p className='text-[32px] font-semibold w-70  mb-10'>Войти или создать профиль</p>
-    <form action="">
-     <div className='flex flex-col'>
-       <label className='text-[#828282] text-[16px] mb-[8.5px]' htmlFor="Номер телефона">Номер телефона</label>
-      <input type="tel" placeholder='(_ _) _ _ _  _ _  _ _' className='input pl-5 rounded-2xl input-neutral w-full mb-10' minLength={9} maxLength={9} />
-     </div>
-      <button className='btn btn-error text-white w-full'>Подтвердить</button>
-    </form>
-  </div>
-  <form method="dialog" className="modal-backdrop">
-    <button >close</button>
-  </form>
-</dialog>
+{isLoggedIn ? (
+  <img
+    src={userAvatar}
+    alt="User Avatar"
+    className="w-10 h-10 rounded-full border-2 border-red-500"
+  />
+) : (
+  <Link to={'/login'}>
+    <div className="flex flex-col text-[18px] items-center">
+      <FaRegUser />
+      Войти
+    </div>
+  </Link>
+)}
+
         </div>
       </div>
 

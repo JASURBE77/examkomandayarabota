@@ -11,6 +11,7 @@ import CategoryPage from './pages/CategoryPage.jsx';
 import Basket from './pages/Basket.jsx';
 import Shopping from './pages/Shopping.jsx';
 import Skidka from './pages/Skidka.jsx';
+import LoginPage from './pages/LoginPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       }
     ]
   },
+  {
+    path: "/login",
+    element: <LoginPage />
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(
